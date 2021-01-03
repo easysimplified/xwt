@@ -7,10 +7,17 @@ namespace Xwt.Interop {
 #if XWT_GTKSHARP3
         [UnmanagedFunctionPointer (CallingConvention.Cdecl)]
         public delegate IntPtr d_g_object_get_data(IntPtr source, string name);
-        public static d_g_object_get_data g_object_get_data = FuncLoader.LoadFunction<d_g_object_get_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.Gtk), "g_object_get_data"));
+        public static d_g_object_get_data g_object_get_data = FuncLoader.LoadFunction<d_g_object_get_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_get_data"));
 #else
 		[DllImport (GtkInterop.LIBGOBJECT, CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr g_object_get_data (IntPtr source, string name);
+#endif
+#if XWT_GTKSHARP3
+	    [UnmanagedFunctionPointer (CallingConvention.Cdecl)]
+	    public delegate IntPtr d_g_object_set_data(IntPtr source, string name, IntPtr data);
+	    public static d_g_object_set_data g_object_set_data = FuncLoader.LoadFunction<d_g_object_set_data>(FuncLoader.GetProcAddress(GLibrary.Load(Library.GObject), "g_object_set_data"));
+#else
+
 #endif
 #if XWT_GTKSHARP3
         [UnmanagedFunctionPointer (CallingConvention.Cdecl)]
@@ -19,6 +26,6 @@ namespace Xwt.Interop {
 #else
 		[DllImport(GtkInterop.LIBGOBJECT, CallingConvention = CallingConvention.Cdecl)]
 		public static extern IntPtr g_signal_stop_emission_by_name(IntPtr raw, string name);
-#endif        
+#endif
     }
 }
