@@ -293,8 +293,7 @@ namespace Xwt.GtkBackend {
             if (eventId is WebViewEvent) {
                 switch ((WebViewEvent)eventId) {
                     case WebViewEvent.NavigateToUrl:
-                        view.MainResource.SentRequest += HandleNavigationRequested;
-
+                        view.ResourceLoadStarted += HandleNavigationRequested;
                         break;
                     case WebViewEvent.Loading:
                         view.LoadChanged += HandleLoadStarted;
@@ -318,7 +317,7 @@ namespace Xwt.GtkBackend {
             if (eventId is WebViewEvent) {
                 switch ((WebViewEvent)eventId) {
                     case WebViewEvent.NavigateToUrl:
-                        view.MainResource.SentRequest -= HandleNavigationRequested;
+	                    view.ResourceLoadStarted -= HandleNavigationRequested;
 
                         break;
                     case WebViewEvent.Loading:
@@ -337,11 +336,13 @@ namespace Xwt.GtkBackend {
             }
         }
 
-        void HandleNavigationRequested (object sender, SentRequestArgs e) {
-            ApplicationContext.InvokeUserCode (delegate {
-                if (EventSink.OnNavigateToUrl (e.Request.Uri))
-                    ;
-            });
+        void HandleNavigationRequested (object sender, ResourceLoadStartedArgs e) {
+	        if (e.Resource == view.MainResource) {
+		        ApplicationContext.InvokeUserCode (delegate {
+			        if (EventSink.OnNavigateToUrl (e.Request.Uri))
+				        ;
+		        });
+	        }
         }
 
         void HandleLoadStarted (object o, LoadChangedArgs args) {
