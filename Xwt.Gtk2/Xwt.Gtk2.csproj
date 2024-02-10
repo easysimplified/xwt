@@ -4,6 +4,9 @@
     <RootNamespace>Xwt.Gtk</RootNamespace>
     <AssemblyName>Xwt.Gtk</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+     <SignAssembly>True</SignAssembly>
+      <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
+    
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DefineConstants>TRACE;DEBUG</DefineConstants>
