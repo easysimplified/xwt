@@ -34,153 +34,154 @@ using static Xwt.Interop.DllImportPangoCairo;
 using static Xwt.Interop.DllImportFontConfig;
 namespace Xwt.GtkBackend
 {
-	public class GtkFontBackendHandler: FontBackendHandler
-	{
-		static Pango.Context systemContext;
+// 	public class GtkFontBackendHandler: FontBackendHandler
+// 	{
+// 		static Pango.Context systemContext;
 
-		static GtkFontBackendHandler ()
-		{
-			systemContext = Gdk.PangoHelper.ContextGet ();
-		}
+// 		static GtkFontBackendHandler ()
+// 		{
+// 			systemContext = Gdk.PangoHelper.ContextGet ();
+// 		}
 
-		//Gtk.Style _style;
+// 		Gtk.Style _style;
 		
-		public override object GetSystemDefaultFont ()
-		{
-#if XWT_GTKSHARP3
-	//		_style = _style ?? (_style = Gtk.Rc.GetStyle (new Gtk.Label ()));
-	//		return _style?.FontDesc;
-#else			
-			var style = Gtk.Rc.GetStyleByPaths (Gtk.Settings.Default, null, null, Gtk.Label.GType);
-			return style.FontDescription;
-#endif
-		}
+// 	//	public override object GetSystemDefaultFont ()
+// 	//	{
+// //#if XWT_GTKSHARP3
+// 	//		_style = _style ?? (_style = Gtk.Rc.GetStyle (new Gtk.Label ()));
+// 	//		return _style?.FontDesc;
+// //#else			
+// 			//var style = Gtk.Rc.GetStyleByPaths (Gtk.Settings.Default, null, null, Gtk.Label.GType);
+// 			//return style.FontDescription;
+// 			//return;
+// //#endif
+// 		//}
 
-		public override IEnumerable<string> GetInstalledFonts ()
-		{
-			var fontNames = systemContext.FontMap.Families.Select (f => f.Name);
-			if (Platform.IsMac) {
-				var macFonts = new string [] { "-apple-system-font", ".AppleSystemUIFont" }.AsEnumerable ();
-				return macFonts.Concat (fontNames);
-			}
-			return fontNames;
-		}
+// 		public override IEnumerable<string> GetInstalledFonts ()
+// 		{
+// 			var fontNames = systemContext.FontMap.Families.Select (f => f.Name);
+// 			if (Platform.IsMac) {
+// 				var macFonts = new string [] { "-apple-system-font", ".AppleSystemUIFont" }.AsEnumerable ();
+// 				return macFonts.Concat (fontNames);
+// 			}
+// 			return fontNames;
+// 		}
 
-		public override IEnumerable<KeyValuePair<string, object>> GetAvailableFamilyFaces (string family)
-		{
-			FontFamily pangoFamily = systemContext.FontMap.Families.FirstOrDefault (f => f.Name == family);
-			if (pangoFamily != null) {
-				foreach (var face in pangoFamily.Faces)
-					yield return new KeyValuePair<string, object>(face.FaceName, face.Describe ());
-			}
-			yield break;
-		}
+// 		public override IEnumerable<KeyValuePair<string, object>> GetAvailableFamilyFaces (string family)
+// 		{
+// 			FontFamily pangoFamily = systemContext.FontMap.Families.FirstOrDefault (f => f.Name == family);
+// 			if (pangoFamily != null) {
+// 				foreach (var face in pangoFamily.Faces)
+// 					yield return new KeyValuePair<string, object>(face.FaceName, face.Describe ());
+// 			}
+// 			yield break;
+// 		}
 
-		public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch)
-		{
-			var result = FontDescription.FromString (fontName + " " + size.ToString (CultureInfo.InvariantCulture));
-			result.Style = (Pango.Style)style;
-			result.Weight = (Pango.Weight)weight;
-			result.Stretch = (Pango.Stretch)stretch;
-			return result;
-		}
+// 		public override object Create (string fontName, double size, FontStyle style, FontWeight weight, FontStretch stretch)
+// 		{
+// 			var result = FontDescription.FromString (fontName + " " + size.ToString (CultureInfo.InvariantCulture));
+// 			result.Style = (Pango.Style)style;
+// 			result.Weight = (Pango.Weight)weight;
+// 			result.Stretch = (Pango.Stretch)stretch;
+// 			return result;
+// 		}
 
-		public override bool RegisterFontFromFile (string fontPath)
-		{
-			var result = AddFontFile (fontPath);
-			if (result) {
-				pango_cairo_font_map_set_default (System.IntPtr.Zero);
-				systemContext = Gdk.PangoHelper.ContextGet ();
-			}
-			return result;
-		}
+// 		public override bool RegisterFontFromFile (string fontPath)
+// 		{
+// 			var result = AddFontFile (fontPath);
+// 			if (result) {
+// 				pango_cairo_font_map_set_default (System.IntPtr.Zero);
+// 				systemContext = Gdk.PangoHelper.ContextGet ();
+// 			}
+// 			return result;
+// 		}
 
-		protected virtual bool AddFontFile (string fontPath)
-		{
-			// Try to add font file to the current fontconfig configuration
-			return FcConfigAppFontAddFile (System.IntPtr.Zero, fontPath);
-		}
+// 		protected virtual bool AddFontFile (string fontPath)
+// 		{
+// 			// Try to add font file to the current fontconfig configuration
+// 			return FcConfigAppFontAddFile (System.IntPtr.Zero, fontPath);
+// 		}
 
-		#region IFontBackendHandler implementation
+// 		#region IFontBackendHandler implementation
 		
-		public override object Copy (object handle)
-		{
-			FontDescription d = (FontDescription) handle;
-			return d.Copy ();
-		}
+// 		public override object Copy (object handle)
+// 		{
+// 			FontDescription d = (FontDescription) handle;
+// 			return d.Copy ();
+// 		}
 		
-		public override object SetSize (object handle, double size)
-		{
-			FontDescription d = (FontDescription) handle;
-			d = d.Copy ();
-			d.Size = (int) (size * Pango.Scale.PangoScale);
-			return d;
-		}
+// 		public override object SetSize (object handle, double size)
+// 		{
+// 			FontDescription d = (FontDescription) handle;
+// 			d = d.Copy ();
+// 			d.Size = (int) (size * Pango.Scale.PangoScale);
+// 			return d;
+// 		}
 
-		public override object SetFamily (object handle, string family)
-		{
-			FontDescription fd = (FontDescription) handle;
-			fd = fd.Copy ();
-			fd.Family = family;
-			return fd;
-		}
+// 		public override object SetFamily (object handle, string family)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			fd = fd.Copy ();
+// 			fd.Family = family;
+// 			return fd;
+// 		}
 
-		public override object SetStyle (object handle, FontStyle style)
-		{
-			FontDescription fd = (FontDescription) handle;
-			fd = fd.Copy ();
-			fd.Style = (Pango.Style)(int)style;
-			return fd;
-		}
+// 		public override object SetStyle (object handle, FontStyle style)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			fd = fd.Copy ();
+// 			fd.Style = (Pango.Style)(int)style;
+// 			return fd;
+// 		}
 
-		public override object SetWeight (object handle, FontWeight weight)
-		{
-			FontDescription fd = (FontDescription) handle;
-			fd = fd.Copy ();
-			fd.Weight = (Pango.Weight)(int)weight;
-			return fd;
-		}
+// 		public override object SetWeight (object handle, FontWeight weight)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			fd = fd.Copy ();
+// 			fd.Weight = (Pango.Weight)(int)weight;
+// 			return fd;
+// 		}
 
-		public override object SetStretch (object handle, FontStretch stretch)
-		{
-			FontDescription fd = (FontDescription) handle;
-			fd = fd.Copy ();
-			fd.Stretch = (Pango.Stretch)(int)stretch;
-			return fd;
-		}
+// 		public override object SetStretch (object handle, FontStretch stretch)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			fd = fd.Copy ();
+// 			fd.Stretch = (Pango.Stretch)(int)stretch;
+// 			return fd;
+// 		}
 		
-		public override double GetSize (object handle)
-		{
-			FontDescription fd = (FontDescription) handle;
-			return (double)fd.Size / (double) Pango.Scale.PangoScale;
-		}
+// 		public override double GetSize (object handle)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			return (double)fd.Size / (double) Pango.Scale.PangoScale;
+// 		}
 
-		public override string GetFamily (object handle)
-		{
-			FontDescription fd = (FontDescription) handle;
-			return fd.Family;
-		}
+// 		public override string GetFamily (object handle)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			return fd.Family;
+// 		}
 
-		public override FontStyle GetStyle (object handle)
-		{
-			FontDescription fd = (FontDescription) handle;
-			return (FontStyle)(int)fd.Style;
-		}
+// 		public override FontStyle GetStyle (object handle)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			return (FontStyle)(int)fd.Style;
+// 		}
 
-		public override FontWeight GetWeight (object handle)
-		{
-			FontDescription fd = (FontDescription) handle;
-			return (FontWeight)(int)fd.Weight;
-		}
+// 		public override FontWeight GetWeight (object handle)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			return (FontWeight)(int)fd.Weight;
+// 		}
 
-		public override FontStretch GetStretch (object handle)
-		{
-			FontDescription fd = (FontDescription) handle;
-			return (FontStretch)(int)fd.Stretch;
-		}
-		#endregion
+// 		public override FontStretch GetStretch (object handle)
+// 		{
+// 			FontDescription fd = (FontDescription) handle;
+// 			return (FontStretch)(int)fd.Stretch;
+// 		}
+// 		#endregion
 
 
-	}
+// 	}
 }
 

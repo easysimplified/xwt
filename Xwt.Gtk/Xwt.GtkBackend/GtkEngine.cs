@@ -61,7 +61,7 @@ namespace Xwt.GtkBackend
 			RegisterBackend<TextLayoutBackendHandler, GtkTextLayoutBackendHandler> ();
 			RegisterBackend<DrawingPathBackendHandler, CairoContextBackendHandler> ();
 			RegisterBackend<GradientBackendHandler, CairoGradientBackendHandler> ();
-			RegisterBackend<FontBackendHandler, GtkFontBackendHandler> ();
+			//RegisterBackend<FontBackendHandler, GtkFontBackendHandler> ();
 			RegisterBackend<IMenuBackend, MenuBackend> ();
 			RegisterBackend<IMenuItemBackend, MenuItemBackend> ();
 			RegisterBackend<ICheckBoxMenuItemBackend, CheckBoxMenuItemBackend> ();
