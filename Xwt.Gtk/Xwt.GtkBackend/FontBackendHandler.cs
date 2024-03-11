@@ -53,7 +53,6 @@ namespace Xwt.GtkBackend
 #else			
 			var style = Gtk.Rc.GetStyleByPaths (Gtk.Settings.Default, null, null, Gtk.Label.GType);
 			return style.FontDescription;
-			return;
 #endif
 		}
 
