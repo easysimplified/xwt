@@ -108,7 +108,7 @@ namespace Xwt.GtkBackend
 			RegisterBackend<IPasswordEntryBackend, PasswordEntryBackend> ();
 			RegisterBackend<KeyboardHandler, GtkKeyboardHandler> ();
 			RegisterBackend<ISearchTextEntryBackend, SearchTextEntryBackend> ();
-			RegisterBackend<IWebViewBackend, WebViewBackend> ();
+			//RegisterBackend<IWebViewBackend, WebViewBackend> ();
 			RegisterBackend<IColorSelectorBackend, ColorSelectorBackend> ();
 			RegisterBackend<IColorPickerBackend, ColorPickerBackend> ();
 			RegisterBackend<ICalendarBackend, CalendarBackend> ();

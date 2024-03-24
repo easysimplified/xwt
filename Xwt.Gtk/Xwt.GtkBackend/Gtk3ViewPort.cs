@@ -83,13 +83,13 @@ namespace Xwt.GtkBackend
 		{
 		}
 		
-#if XWT_GTKSHARP3
+// #if XWT_GTKSHARP3
 
-		bool Gtk.IScrollableImplementor.GetBorder (out Gtk.Border border) {
-			border = default;
-			return true;
-		}
-#endif
+// 		bool Gtk.IScrollableImplementor.GetBorder (out Gtk.Border border) {
+// 			border = default;
+// 			return true;
+// 		}
+// #endif
 	}
 }
 

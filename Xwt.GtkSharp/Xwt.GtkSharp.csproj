@@ -1,20 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net472</TargetFrameworks>
     <RootNamespace>Xwt.Gtk3</RootNamespace>
     <AssemblyName>Xwt.Gtk3</AssemblyName>
-    <LangVersion>8</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
  <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;XWT_GTK3;XWT_GTKSHARP3</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;XWT_GTK3;XWT_GTKSHARP3</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType></DebugType>
-    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;XWT_GTK3;XWT_GTKSHARP3</DefineConstants>
+    <DefineConstants>TRACE;RELEASE;XWT_GTK3;XWT_GTKSHARP3</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -25,8 +24,30 @@
     <ProjectReference Include="..\Xwt\Xwt.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="GtkSharp" Version="3.24.24.95" />
-    <PackageReference Include="WebkitGtkSharp" Version="3.24.24.95" />
+     <Reference Include="atk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>$(ReferencesGtkCopyToOutput)</Private>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>$(ReferencesGtkCopyToOutput)</Private>
+    </Reference>
+    <Reference Include="glade-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>$(ReferencesGtkCopyToOutput)</Private>
+    </Reference>
+    <Reference Include="glib-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>$(ReferencesGtkCopyToOutput)</Private>
+    </Reference>
+    <Reference Include="gtk-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>$(ReferencesGtkCopyToOutput)</Private>
+    </Reference>
+    <Reference Include="pango-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>$(ReferencesGtkCopyToOutput)</Private>
+    </Reference>
+     <Reference Include="cairo-sharp, Version=1.10.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <Package>gtk-sharp-3.0</Package>
+    </Reference>
+      <Reference Include="gio-sharp, Version=3.0.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gio-sharp-3.0</Package>
+    </Reference>
     <PackageReference Include="System.Reflection.Emit.ILGeneration" Version="4.7.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />

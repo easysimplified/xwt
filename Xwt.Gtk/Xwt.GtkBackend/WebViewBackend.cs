@@ -28,342 +28,342 @@ using System;
 using Xwt.Backends;
 using System.Runtime.InteropServices;
 
-#if !XWT_GTKSHARP3
+//#if !XWT_GTKSHARP3
 using Xwt.GtkBackend.WebKit;
-#else
-using WebKit;
-#endif
+//#else
+//using WebKit;
+//#endif
 
 namespace Xwt.GtkBackend {
 
-#if !XWT_GTKSHARP3
-	public class WebViewBackend : WidgetBackend, IWebViewBackend
-	{
-		WebKit.WebView view;
+// #if !XWT_GTKSHARP3
+// 	public class WebViewBackend : WidgetBackend, IWebViewBackend
+// 	{
+// 		WebKit.WebView view;
 
-		public WebViewBackend ()
-		{
-		}
+// 		public WebViewBackend ()
+// 		{
+// 		}
 
-		public override void Initialize()
-		{
-			NeedsEventBox = false;
-			base.Initialize ();
+// 		public override void Initialize()
+// 		{
+// 			NeedsEventBox = false;
+// 			base.Initialize ();
 
-			view = new WebKit.WebView ();
-			view.ContextMenu += HandleContextMenuRequest;
-			Widget = view;
-			Widget.Show ();
-		}
+// 			view = new WebKit.WebView ();
+// 			view.ContextMenu += HandleContextMenuRequest;
+// 			Widget = view;
+// 			Widget.Show ();
+// 		}
 
-		public string Url {
-			get { return view.Uri; }
-			set {
-				view.LoadUri (value);
-			}
-		}
+// 		public string Url {
+// 			get { return view.Uri; }
+// 			set {
+// 				view.LoadUri (value);
+// 			}
+// 		}
 
-		public string Title {
-			get {
-				return view.Title;
-			}
-		}
+// 		public string Title {
+// 			get {
+// 				return view.Title;
+// 			}
+// 		}
 
-		public double LoadProgress {
-			get {
-				return view.LoadProgress;
-			}
-		}
+// 		public double LoadProgress {
+// 			get {
+// 				return view.LoadProgress;
+// 			}
+// 		}
 
-		public bool CanGoBack {
-			get {
-				return view.CanGoBack ();
-			}
-		}
+// 		public bool CanGoBack {
+// 			get {
+// 				return view.CanGoBack ();
+// 			}
+// 		}
 
-		public bool CanGoForward {
-			get {
-				return view.CanGoForward ();
-			}
-		}
+// 		public bool CanGoForward {
+// 			get {
+// 				return view.CanGoForward ();
+// 			}
+// 		}
 
-		public bool ContextMenuEnabled { get; set; }
+// 		public bool ContextMenuEnabled { get; set; }
 
-		public bool DrawsBackground {
-			get {
-				return !view.Transparent;
-			}
-			set {
-				view.Transparent = !value;
-			}
-		}
+// 		public bool DrawsBackground {
+// 			get {
+// 				return !view.Transparent;
+// 			}
+// 			set {
+// 				view.Transparent = !value;
+// 			}
+// 		}
 
-		public bool ScrollBarsEnabled {
-			get {
-				return view.SelfScrolling;
-			}
-			set {
-				view.SelfScrolling = value;
-			}
-		}
+// 		public bool ScrollBarsEnabled {
+// 			get {
+// 				return view.SelfScrolling;
+// 			}
+// 			set {
+// 				view.SelfScrolling = value;
+// 			}
+// 		}
 
-		public string CustomCss { get; set; }
+// 		public string CustomCss { get; set; }
 
-		public void GoBack ()
-		{
-			view.GoBack ();
-		}
+// 		public void GoBack ()
+// 		{
+// 			view.GoBack ();
+// 		}
 
-		public void GoForward ()
-		{
-			view.GoForward ();
-		}
+// 		public void GoForward ()
+// 		{
+// 			view.GoForward ();
+// 		}
 
-		public void Reload ()
-		{
-			view.Reload ();
-		}
+// 		public void Reload ()
+// 		{
+// 			view.Reload ();
+// 		}
 
-		public void StopLoading ()
-		{
-			view.StopLoading ();
-		}
+// 		public void StopLoading ()
+// 		{
+// 			view.StopLoading ();
+// 		}
 
-		public void LoadHtml (string content, string base_uri)
-		{
-			view.LoadHtmlString (content, base_uri);
-		}
+// 		public void LoadHtml (string content, string base_uri)
+// 		{
+// 			view.LoadHtmlString (content, base_uri);
+// 		}
 
-		protected new IWebViewEventSink EventSink {
-			get { return (IWebViewEventSink)base.EventSink; }
-		}
+// 		protected new IWebViewEventSink EventSink {
+// 			get { return (IWebViewEventSink)base.EventSink; }
+// 		}
 
-		public override void EnableEvent (object eventId)
-		{
-			base.EnableEvent (eventId);
-			if (eventId is WebViewEvent) {
-				switch ((WebViewEvent)eventId) {
-					case WebViewEvent.NavigateToUrl: view.NavigationRequested += HandleNavigationRequested; break;
-					case WebViewEvent.Loading: view.LoadStarted += HandleLoadStarted; break;
-					case WebViewEvent.Loaded: view.LoadFinished += HandleLoadFinished; break;
-					case WebViewEvent.TitleChanged: view.TitleChanged += HandleTitleChanged; break;
-				}
-			}
-		}
+// 		public override void EnableEvent (object eventId)
+// 		{
+// 			base.EnableEvent (eventId);
+// 			if (eventId is WebViewEvent) {
+// 				switch ((WebViewEvent)eventId) {
+// 					case WebViewEvent.NavigateToUrl: view.NavigationRequested += HandleNavigationRequested; break;
+// 					case WebViewEvent.Loading: view.LoadStarted += HandleLoadStarted; break;
+// 					case WebViewEvent.Loaded: view.LoadFinished += HandleLoadFinished; break;
+// 					case WebViewEvent.TitleChanged: view.TitleChanged += HandleTitleChanged; break;
+// 				}
+// 			}
+// 		}
 
-		public override void DisableEvent (object eventId)
-		{
-			base.DisableEvent (eventId);
-			if (eventId is WebViewEvent) {
-				switch ((WebViewEvent)eventId) {
-					case WebViewEvent.NavigateToUrl: view.NavigationRequested -= HandleNavigationRequested; break;
-					case WebViewEvent.Loading: view.LoadStarted -= HandleLoadStarted; break;
-					case WebViewEvent.Loaded: view.LoadFinished -= HandleLoadFinished; break;
-					case WebViewEvent.TitleChanged: view.TitleChanged -= HandleTitleChanged; break;
-				}
-			}
-		}
+// 		public override void DisableEvent (object eventId)
+// 		{
+// 			base.DisableEvent (eventId);
+// 			if (eventId is WebViewEvent) {
+// 				switch ((WebViewEvent)eventId) {
+// 					case WebViewEvent.NavigateToUrl: view.NavigationRequested -= HandleNavigationRequested; break;
+// 					case WebViewEvent.Loading: view.LoadStarted -= HandleLoadStarted; break;
+// 					case WebViewEvent.Loaded: view.LoadFinished -= HandleLoadFinished; break;
+// 					case WebViewEvent.TitleChanged: view.TitleChanged -= HandleTitleChanged; break;
+// 				}
+// 			}
+// 		}
 
-		void HandleNavigationRequested (object sender, WebKit.NavigationRequestedArgs e)
-		{
-			ApplicationContext.InvokeUserCode (delegate {
-				if (EventSink.OnNavigateToUrl (e.Request.Uri))
-					e.RetVal = NavigationResponse.Ignore;
-			});
-		}
+// 		void HandleNavigationRequested (object sender, WebKit.NavigationRequestedArgs e)
+// 		{
+// 			ApplicationContext.InvokeUserCode (delegate {
+// 				if (EventSink.OnNavigateToUrl (e.Request.Uri))
+// 					e.RetVal = NavigationResponse.Ignore;
+// 			});
+// 		}
 
-		void HandleLoadStarted (object o, EventArgs args)
-		{
-			ApplicationContext.InvokeUserCode (EventSink.OnLoading);
-		}
+// 		void HandleLoadStarted (object o, EventArgs args)
+// 		{
+// 			ApplicationContext.InvokeUserCode (EventSink.OnLoading);
+// 		}
 
-		void HandleLoadFinished (object o, EventArgs args)
-		{
-			ApplicationContext.InvokeUserCode (EventSink.OnLoaded);
-		}
+// 		void HandleLoadFinished (object o, EventArgs args)
+// 		{
+// 			ApplicationContext.InvokeUserCode (EventSink.OnLoaded);
+// 		}
 
-		void HandleTitleChanged (object sender, WebKit.TitleChangedArgs e)
-		{
-			ApplicationContext.InvokeUserCode (EventSink.OnTitleChanged);
-		}
+// 		void HandleTitleChanged (object sender, WebKit.TitleChangedArgs e)
+// 		{
+// 			ApplicationContext.InvokeUserCode (EventSink.OnTitleChanged);
+// 		}
 
-		void HandleContextMenuRequest (object sender, ContextMenuArgs e)
-		{
-			e.RetVal = !ContextMenuEnabled;
-		}
-	}
-#else
-    public class WebViewBackend : WidgetBackend, IWebViewBackend {
+// 		void HandleContextMenuRequest (object sender, ContextMenuArgs e)
+// 		{
+// 			e.RetVal = !ContextMenuEnabled;
+// 		}
+// 	}
+// #else
+   // public class WebViewBackend : WidgetBackend, IWebViewBackend {
 
-        global::WebKit.WebView view;
+       // global::WebKit.WebView view;
 
-        public WebViewBackend () { }
+        // public WebViewBackend () { }
 
-        public override void Initialize () {
-            NeedsEventBox = false;
-            base.Initialize ();
+        // public override void Initialize () {
+        //     NeedsEventBox = false;
+        //     base.Initialize ();
 
-            view = new global::WebKit.WebView ();
-            view.ContextMenu += HandleContextMenuRequest;
-            Widget = view;
-            Widget.Show ();
-        }
+        //    // view = new global::WebKit.WebView ();
+        //    // view.ContextMenu += HandleContextMenuRequest;
+        //    // Widget = view;
+        //    // Widget.Show ();
+        // }
 
-        public string Url {
-            get { return view.Uri; }
-            set {
-                view.LoadUri (value);
-            }
-        }
+        // public string Url {
+        //     get { return view.Uri; }
+        //     set {
+        //         view.LoadUri (value);
+        //     }
+        // }
 
-        public string Title {
-            get {
-                return view.Title;
-            }
-        }
+        // public string Title {
+        //     get {
+        //         return view.Title;
+        //     }
+        // }
 
-        public double LoadProgress {
-            get {
-	            return view.EstimatedLoadProgress;
-            }
-        }
+        // public double LoadProgress {
+        //     get {
+	    //         return view.EstimatedLoadProgress;
+        //     }
+        // }
 
-        public bool CanGoBack {
-            get {
-                return view.CanGoBack ();
-            }
-        }
+        // public bool CanGoBack {
+        //     get {
+        //         return view.CanGoBack ();
+        //     }
+        // }
 
-        public bool CanGoForward {
-            get {
-                return view.CanGoForward ();
-            }
-        }
+        // public bool CanGoForward {
+        //     get {
+        //         return view.CanGoForward ();
+        //     }
+        // }
 
-        public bool ContextMenuEnabled { get; set; }
+        // public bool ContextMenuEnabled { get; set; }
 
-        public bool DrawsBackground {
-            get {
-                // return !view.Transparent;
-                return false;
-            }
-            set {
-                // view.Transparent = !value;
-            }
-        }
+        // public bool DrawsBackground {
+        //     get {
+        //         // return !view.Transparent;
+        //         return false;
+        //     }
+        //     set {
+        //         // view.Transparent = !value;
+        //     }
+        // }
 
-        public bool ScrollBarsEnabled {
-            get {
-                return view.WindowProperties.ScrollbarsVisible;
-            }
-            set {
-	            // view.WindowProperties.;
-            }
-        }
+        // public bool ScrollBarsEnabled {
+        //     get {
+        //         return view.WindowProperties.ScrollbarsVisible;
+        //     }
+        //     set {
+	    //         // view.WindowProperties.;
+        //     }
+        // }
 
-        public string CustomCss { get; set; }
+        // public string CustomCss { get; set; }
 
-        public void GoBack () {
-            view.GoBack ();
-        }
+        // public void GoBack () {
+        //     view.GoBack ();
+        // }
 
-        public void GoForward () {
-            view.GoForward ();
-        }
+        // public void GoForward () {
+        //     view.GoForward ();
+        // }
 
-        public void Reload () {
-            view.Reload ();
-        }
+        // public void Reload () {
+        //     view.Reload ();
+        // }
 
-        public void StopLoading () {
-            view.StopLoading ();
-        }
+        // public void StopLoading () {
+        //     view.StopLoading ();
+        // }
 
-        public void LoadHtml (string content, string base_uri) {
-            view.LoadHtml (content, base_uri);
-        }
+        // public void LoadHtml (string content, string base_uri) {
+        //     view.LoadHtml (content, base_uri);
+        // }
 
-        protected new IWebViewEventSink EventSink {
-            get { return (IWebViewEventSink)base.EventSink; }
-        }
+        // protected new IWebViewEventSink EventSink {
+        //     get { return (IWebViewEventSink)base.EventSink; }
+        // }
 
-        public override void EnableEvent (object eventId) {
-            base.EnableEvent (eventId);
+        // public override void EnableEvent (object eventId) {
+        //     base.EnableEvent (eventId);
 
-            if (eventId is WebViewEvent) {
-                switch ((WebViewEvent)eventId) {
-                    case WebViewEvent.NavigateToUrl:
-                        view.ResourceLoadStarted += HandleNavigationRequested;
-                        break;
-                    case WebViewEvent.Loading:
-                        view.LoadChanged += HandleLoadStarted;
+        //     if (eventId is WebViewEvent) {
+        //         switch ((WebViewEvent)eventId) {
+        //             case WebViewEvent.NavigateToUrl:
+        //                 view.ResourceLoadStarted += HandleNavigationRequested;
+        //                 break;
+        //             case WebViewEvent.Loading:
+        //                 view.LoadChanged += HandleLoadStarted;
 
-                        break;
-                    case WebViewEvent.Loaded:
-                        view.LoadChanged += HandleLoadFinished;
+        //                 break;
+        //             case WebViewEvent.Loaded:
+        //                 view.LoadChanged += HandleLoadFinished;
 
-                        break;
-                    case WebViewEvent.TitleChanged:
-                        // view.TitleChanged += HandleTitleChanged;
+        //                 break;
+        //             case WebViewEvent.TitleChanged:
+        //                 // view.TitleChanged += HandleTitleChanged;
 
-                        break;
-                }
-            }
-        }
+        //                 break;
+        //         }
+        //     }
+        // }
 
-        public override void DisableEvent (object eventId) {
-            base.DisableEvent (eventId);
+        // public override void DisableEvent (object eventId) {
+        //     base.DisableEvent (eventId);
 
-            if (eventId is WebViewEvent) {
-                switch ((WebViewEvent)eventId) {
-                    case WebViewEvent.NavigateToUrl:
-	                    view.ResourceLoadStarted -= HandleNavigationRequested;
+        //     if (eventId is WebViewEvent) {
+        //         switch ((WebViewEvent)eventId) {
+        //             case WebViewEvent.NavigateToUrl:
+	    //                 view.ResourceLoadStarted -= HandleNavigationRequested;
 
-                        break;
-                    case WebViewEvent.Loading:
-                        view.LoadChanged -= HandleLoadStarted;
+        //                 break;
+        //             case WebViewEvent.Loading:
+        //                 view.LoadChanged -= HandleLoadStarted;
 
-                        break;
-                    case WebViewEvent.Loaded:
-                        view.LoadChanged -= HandleLoadFinished;
+        //                 break;
+        //             case WebViewEvent.Loaded:
+        //                 view.LoadChanged -= HandleLoadFinished;
 
-                        break;
-                    case WebViewEvent.TitleChanged:
-                        // view.TitleChanged -= HandleTitleChanged;
+        //                 break;
+        //             case WebViewEvent.TitleChanged:
+        //                 // view.TitleChanged -= HandleTitleChanged;
 
-                        break;
-                }
-            }
-        }
+        //                 break;
+        //         }
+        //     }
+        // }
 
-        void HandleNavigationRequested (object sender, ResourceLoadStartedArgs e) {
-	        if (e.Resource == view.MainResource) {
-		        ApplicationContext.InvokeUserCode (delegate {
-			        if (EventSink.OnNavigateToUrl (e.Request.Uri))
-				        ;
-		        });
-	        }
-        }
+        // void HandleNavigationRequested (object sender, ResourceLoadStartedArgs e) {
+	    //     if (e.Resource == view.MainResource) {
+		//         ApplicationContext.InvokeUserCode (delegate {
+		// 	        if (EventSink.OnNavigateToUrl (e.Request.Uri))
+		// 		        ;
+		//         });
+	    //     }
+        // }
 
-        void HandleLoadStarted (object o, LoadChangedArgs args) {
-            if (args.LoadEvent == LoadEvent.Started)
-                ApplicationContext.InvokeUserCode (EventSink.OnLoading);
-        }
+        // void HandleLoadStarted (object o, LoadChangedArgs args) {
+        //     if (args.LoadEvent == LoadEvent.Started)
+        //         ApplicationContext.InvokeUserCode (EventSink.OnLoading);
+        // }
 
-        void HandleLoadFinished (object o, LoadChangedArgs args) {
-            if (args.LoadEvent == LoadEvent.Finished)
-                ApplicationContext.InvokeUserCode (EventSink.OnLoaded);
-        }
+        // void HandleLoadFinished (object o, LoadChangedArgs args) {
+        //     if (args.LoadEvent == LoadEvent.Finished)
+        //         ApplicationContext.InvokeUserCode (EventSink.OnLoaded);
+        // }
 
-        void HandleTitleChanged (object sender, WebKit.TitleChangedArgs e) {
-            ApplicationContext.InvokeUserCode (EventSink.OnTitleChanged);
-        }
+        // void HandleTitleChanged (object sender, WebKit.TitleChangedArgs e) {
+        //     ApplicationContext.InvokeUserCode (EventSink.OnTitleChanged);
+        // }
 
-        void HandleContextMenuRequest (object sender, ContextMenuArgs e) {
-            e.RetVal = !ContextMenuEnabled;
-        }
+        // void HandleContextMenuRequest (object sender, ContextMenuArgs e) {
+        //     e.RetVal = !ContextMenuEnabled;
+        // }
 
-    }
-#endif
+  //  }
+//#endif
 
 }

@@ -44,13 +44,13 @@ namespace Xwt.GtkBackend.WebKit
 			Raw = webkit_web_view_new();
 		}
 
-#if XWT_GTKSHARP3
+// #if XWT_GTKSHARP3
 
-		bool Gtk.IScrollable.GetBorder (out Gtk.Border border) {
-			border = default;
-			return true;
-		}
-#endif
+// 		bool Gtk.IScrollable.GetBorder (out Gtk.Border border) {
+// 			border = default;
+// 			return true;
+// 		}
+// #endif
 		
 		public void LoadUri(string uri) {
 			IntPtr native_uri = GLib.Marshaller.StringToPtrGStrdup (uri);
