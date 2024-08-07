@@ -6,6 +6,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
      <SignAssembly>True</SignAssembly>
       <AssemblyOriginatorKeyFile>..\xwt.snk</AssemblyOriginatorKeyFile>
+       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
